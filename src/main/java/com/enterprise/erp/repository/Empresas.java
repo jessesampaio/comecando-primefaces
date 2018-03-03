@@ -18,7 +18,7 @@ public class Empresas implements Serializable {
 	public Empresa porId(Long id) {
 		return manager.find(Empresa.class, id);
 	}
-	//jpql
+	
 	public List<Empresa> todas() {
 		return manager.createQuery("from Empresa", Empresa.class).getResultList();
 	}
