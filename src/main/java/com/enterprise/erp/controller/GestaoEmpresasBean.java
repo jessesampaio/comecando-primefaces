@@ -1,11 +1,14 @@
 package com.enterprise.erp.controller;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.context.RequestContext;
 
 import com.enterprise.erp.model.Empresa;
 import com.enterprise.erp.model.TipoEmpresa;
@@ -31,15 +34,38 @@ public class GestaoEmpresasBean implements Serializable {
 	private List<Empresa> todasEmpresas;
 	private Empresa empresaEdicao = new Empresa();
 	
+	private Empresa empresaSelecionada;
+	
+	
+	
+	public Empresa getEmpresaSelecionada() {
+		return empresaSelecionada;
+	}
+
+	public void setEmpresaSelecionada(Empresa empresaSelecionada) {
+		this.empresaSelecionada = empresaSelecionada;
+	}
+
 	public void prepararNovoCadastro() {
 		empresaEdicao = new Empresa();
 	}
 	
 	public void salvar() {
 		cadastroEmpresa.salvar(empresaEdicao);
+		consultar();	
+		
+		messages.info("Empresa salva com sucesso!");		
+		RequestContext.getCurrentInstance().update(
+				Arrays.asList("frm:msgs", "frm:empresas-table"));		
+	}
+	
+	public void excluir(){
+		cadastroEmpresa.excluir(empresaSelecionada);
+		empresaSelecionada = null;
+		
 		consultar();
 		
-		messages.info("Empresa salva com sucesso!");
+		messages.info("Empresa ecluída com sucesso.");
 	}
 	
 	public void consultar() {
